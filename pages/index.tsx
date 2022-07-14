@@ -21,7 +21,7 @@ const Home = ({ users }: Props) => {
           <input
             type="text"
             placeholder="Search Here"
-            className="py-2 pl-3 outline-none bg-transparent"
+            className="py-2 pl-3 outline-none bg-transparent placeholder:text-sm"
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
