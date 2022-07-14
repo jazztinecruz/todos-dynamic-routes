@@ -1,5 +1,6 @@
+import { SearchIcon } from '@heroicons/react/outline'
 import { GetStaticProps } from 'next'
-import Search from '../components/elements/search'
+import { useState } from 'react'
 import TUser from '../components/helpers/types/user'
 import Layout from '../components/layout'
 import User from '../components/section/users'
@@ -9,18 +10,34 @@ interface Props {
 }
 
 const Home = ({ users }: Props) => {
-  // console.log(users)
+  const [input, setInput] = useState('')
 
   return (
     <Layout>
       <div className="grid gap-5">
-        <Search />
+        {/* search */}
+        <div className="grid grid-cols-[auto,1fr] items-center gap-3 px-3 py-1 border-[1px] border-gray-200 rounded-md">
+          <SearchIcon className="w-5 h-5" />
+          <input
+            type="text"
+            placeholder="Search Here"
+            className="py-2 pl-3 outline-none bg-transparent"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+        </div>
 
-        {/* todos */}
+        {/* users */}
         <div className="grid gap-3">
-          {users.map((user) => (
-            <User key={user.id} user={user}/>
-          ))}
+          {users
+            .filter(
+              (user) =>
+                user.name.toLowerCase().includes(input.toLowerCase()) ||
+                user.username.toLowerCase().includes(input.toLowerCase())
+            )
+            .map((user) => (
+              <User key={user.id} user={user} />
+            ))}
         </div>
       </div>
     </Layout>
@@ -47,7 +64,7 @@ export const getStaticProps: GetStaticProps = async () => {
       return users.map((user: any) => {
         //map todos
         // match todo id to user id
-        const todos = userTodos.filter((todo:any) => todo.userId === user.id)
+        const todos = userTodos.filter((todo: any) => todo.userId === user.id)
 
         // generate new user
         return {
