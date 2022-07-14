@@ -12,7 +12,7 @@ const Todo = ({ todo }: Props) => {
     if (todo.completed) {
       setCompleteness('Completed')
     } else {
-      setCompleteness('Incomplete')
+      setCompleteness('Pending')
     }
   }, [])
 
