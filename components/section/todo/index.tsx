@@ -23,11 +23,11 @@ const Todo = ({ todo }: Props) => {
 
       {/* todo details */}
       <div className="grid grid-cols-[1fr,auto] items-center py-3 px-6">
-        <p className="text-md fotn-medium tracking-wide">{todo.title}</p>
+        <p className="text-sm md:text-md fotn-medium tracking-wide w-52 md:w-full">{todo.title}</p>
         <span
           className={`${
             completeness === 'Completed' ? 'text-green-700' : 'text-red-700'
-          } font-medium text-sm`}
+          } font-medium text-xs md:text-sm`}
         >
           {completeness}
         </span>
