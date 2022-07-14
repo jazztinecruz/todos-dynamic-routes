@@ -1,6 +1,6 @@
+import { SearchIcon } from '@heroicons/react/outline'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { useEffect, useState } from 'react'
-import Search from '../../components/elements/search'
+import { useState } from 'react'
 import TUser from '../../components/helpers/types/user'
 import Layout from '../../components/layout'
 import Todo from '../../components/section/todo'
@@ -10,17 +10,28 @@ interface Props {
 }
 
 const UserTodos = ({ user }: Props) => {
-  console.log(user)
+  const [input, setInput] = useState('')
+
   return (
     <Layout>
       <div className="grid gap-5">
-        <Search />
+        {/* search */}
+        <div className="grid grid-cols-[auto,1fr] items-center gap-3 px-3 py-1 border-[1px] border-gray-200 rounded-md">
+          <SearchIcon className="w-5 h-5" />
+          <input
+            type="text"
+            placeholder="Search Here"
+            className="py-2 pl-3 outline-none bg-transparent"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+        </div>
 
         {/* todos count */}
-        <span className='font-semibold text-sm'>All ({user.todos.length})</span>
+        <span className="font-semibold text-sm">All ({user.todos.length})</span>
         {/* todos */}
         <div className="grid gap-3">
-          {user.todos.map((todo) => (
+          {user.todos.filter((todo) => todo.title.toLowerCase().includes(input.toLowerCase())).map((todo) => (
             <Todo key={todo.id} todo={todo} />
           ))}
         </div>
@@ -52,10 +63,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 // destructure params from Paths
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   // params === user id === /users/1
-  // const response = await fetch(
-  //   `https://jsonplaceholder.typicode.com/users/${String(params!.id)}`
-  // )
-  // const user = await response.json()
   const TODOS_API_URL = 'https://jsonplaceholder.typicode.com/todos'
 
   const user = await fetch(
